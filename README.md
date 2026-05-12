@@ -28,3 +28,5 @@ A drag-and-drop browser game for PT pain science students. Learners place neurot
 Open `index.html` in a browser, or serve the folder with any static file server.
 
 No build step or external dependency is required.
+
+The repository includes the dorsal horn teaching image as an embedded browser asset in `gate-image.js`, with a local image copy at `assets/gate.jpg`.
