@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dorsal Horn Pain Modulation Drag Game</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="topbar" aria-label="Game controls">
+        <div>
+          <p class="kicker">PT pain science</p>
+          <h1>Dorsal Horn Synapse Mapper</h1>
+        </div>
+        <div class="score-card" aria-live="polite">
+          <span id="score">0</span>
+          <span>/</span>
+          <span id="total">0</span>
+          <small>correct</small>
+        </div>
+        <button id="resetBtn" class="reset-btn" type="button">Reset</button>
+      </section>
+
+      <section class="workspace" aria-label="Drag neurotransmitters into spinal pain pathway targets">
+        <aside class="tray" aria-label="Draggable neurotransmitters and mediators">
+          <h2>Drag to the correct site</h2>
+          <div id="tokenTray" class="token-tray"></div>
+        </aside>
+
+        <section class="diagram-panel" aria-label="Clean anatomical diagram of nociceptive input and dorsal horn modulation">
+          <svg class="diagram" viewBox="0 0 1180 760" role="img" aria-labelledby="diagramTitle diagramDesc">
+            <title id="diagramTitle">Nociceptor, dorsal horn, projection neuron, interneuron, and descending modulation</title>
+            <desc id="diagramDesc">
+              Skin nociceptor enters the spinal dorsal horn as a first-order neuron, synapses onto a second-order projection neuron, and is modulated by inhibitory interneurons plus descending RVM and LC input.
+            </desc>
+
+            <defs>
+              <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+                <path d="M0,0 L0,6 L9,3 z" fill="currentColor"></path>
+              </marker>
+              <marker id="arrowRed" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+                <path d="M0,0 L0,6 L9,3 z" fill="#b64a40"></path>
+              </marker>
+              <marker id="arrowBlue" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+                <path d="M0,0 L0,6 L9,3 z" fill="#276c9f"></path>
+              </marker>
+            </defs>
+
+            <rect x="28" y="68" width="292" height="590" rx="8" class="skin-region"></rect>
+            <text x="58" y="110" class="region-label">Skin / Peripheral Nociceptor</text>
+            <path d="M28 210 C86 188, 132 234, 194 206 S286 186, 320 212" class="skin-surface"></path>
+            <path d="M62 490 C112 404, 156 382, 212 332 C252 296, 255 254, 226 222" class="axon peripheral"></path>
+            <circle cx="226" cy="222" r="12" class="receptor"></circle>
+            <path d="M213 230 l-31 18 M217 235 l-22 30 M233 230 l28 18 M236 236 l18 32" class="free-ending"></path>
+            <text x="72" y="536" class="small-label">Free nerve ending</text>
+
+            <rect x="424" y="68" width="500" height="590" rx="8" class="cord-region"></rect>
+            <text x="456" y="110" class="region-label">Spinal Cord: Dorsal Horn</text>
+            <path d="M466 642 C520 492, 516 280, 470 118" class="lamina-line"></path>
+            <text x="494" y="166" class="small-label">Lamina I</text>
+            <text x="494" y="252" class="small-label">Lamina II</text>
+            <text x="494" y="342" class="small-label">Lamina V / WDR</text>
+
+            <path d="M226 490 C330 490, 384 324, 512 305 C584 295, 632 308, 680 330" class="axon primary"></path>
+            <circle cx="512" cy="305" r="10" class="node-dot primary-dot"></circle>
+            <text x="342" y="454" class="neuron-label">1st-order nociceptive afferent</text>
+            <text x="554" y="284" class="small-label">central terminal</text>
+
+            <path d="M700 332 C760 312, 827 314, 858 258 C886 208, 860 158, 812 144" class="axon projection"></path>
+            <circle cx="708" cy="330" r="28" class="soma projection-soma"></circle>
+            <text x="730" y="382" class="neuron-label">2nd-order projection neuron</text>
+            <path d="M858 258 C936 198, 980 142, 1014 80" class="arrow-line ascend" marker-end="url(#arrowRed)"></path>
+            <text x="936" y="118" class="path-label">ascending signal to thalamus</text>
+
+            <circle cx="642" cy="505" r="26" class="soma interneuron-soma"></circle>
+            <path d="M642 482 C635 428, 610 382, 543 328" class="axon inhibitory" marker-end="url(#arrowBlue)"></path>
+            <path d="M666 490 C714 448, 730 395, 712 355" class="axon inhibitory" marker-end="url(#arrowBlue)"></path>
+            <text x="565" y="558" class="neuron-label">inhibitory interneuron</text>
+
+            <rect x="965" y="188" width="168" height="128" rx="8" class="brain-box"></rect>
+            <text x="1002" y="230" class="region-label compact">Brainstem</text>
+            <text x="1004" y="263" class="small-label">RVM</text>
+            <text x="1004" y="292" class="small-label">LC</text>
+            <path d="M986 312 C918 375, 842 410, 748 398" class="arrow-line descend" marker-end="url(#arrow)"></path>
+            <text x="865" y="410" class="path-label">descending inhibition or facilitation</text>
+
+            <g class="drop-layer">
+              <foreignObject x="70" y="292" width="218" height="112">
+                <div class="drop-zone" data-zone="skin" xmlns="http://www.w3.org/1999/xhtml">
+                  <strong>Inflammatory sensitizers at nociceptor terminal</strong>
+                  <span class="slot-count">0/3</span>
+                </div>
+              </foreignObject>
+              <foreignObject x="540" y="178" width="238" height="116">
+                <div class="drop-zone" data-zone="primarySynapse" xmlns="http://www.w3.org/1999/xhtml">
+                  <strong>Primary afferent to 2nd-order neuron</strong>
+                  <span class="slot-count">0/2</span>
+                </div>
+              </foreignObject>
+              <foreignObject x="442" y="424" width="190" height="112">
+                <div class="drop-zone" data-zone="presynapticInhibition" xmlns="http://www.w3.org/1999/xhtml">
+                  <strong>Interneuron onto afferent terminal</strong>
+                  <span class="slot-count">0/1</span>
+                </div>
+              </foreignObject>
+              <foreignObject x="694" y="466" width="196" height="128">
+                <div class="drop-zone" data-zone="postsynapticInhibition" xmlns="http://www.w3.org/1999/xhtml">
+                  <strong>Interneuron onto projection neuron</strong>
+                  <span class="slot-count">0/3</span>
+                </div>
+              </foreignObject>
+              <foreignObject x="930" y="332" width="210" height="150">
+                <div class="drop-zone" data-zone="descending" xmlns="http://www.w3.org/1999/xhtml">
+                  <strong>Descending RVM / LC modulation</strong>
+                  <span class="slot-count">0/2</span>
+                </div>
+              </foreignObject>
+            </g>
+          </svg>
+        </section>
+      </section>
+
+      <section class="feedback-row" aria-live="polite">
+        <div id="feedback" class="feedback">Drag a card onto a synapse or modulation site.</div>
+        <button id="reviewBtn" class="review-btn" type="button">Show completed map</button>
+      </section>
+
+      <section id="explainPanel" class="explain-panel" aria-label="Learning notes">
+        <h2>Why these placements matter</h2>
+        <div class="note-grid">
+          <article>
+            <h3>Peripheral nociceptor</h3>
+            <p>Histamine and inflammatory cytokines sensitize nociceptor endings in injured skin, lowering threshold and amplifying input into the dorsal horn.</p>
+          </article>
+          <article>
+            <h3>Dorsal horn excitation</h3>
+            <p>Primary afferent terminals in superficial dorsal horn release glutamate for fast excitation and substance P during stronger or sustained nociceptive input.</p>
+          </article>
+          <article>
+            <h3>Spinal inhibition</h3>
+            <p>Interneurons use GABA, glycine, and endogenous opioids such as enkephalin to reduce transmitter release and dampen projection-neuron firing.</p>
+          </article>
+          <article>
+            <h3>Descending control</h3>
+            <p>RVM serotonergic input can inhibit or facilitate dorsal horn signaling. LC noradrenergic input is classically inhibitory through spinal alpha-2 mechanisms.</p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
