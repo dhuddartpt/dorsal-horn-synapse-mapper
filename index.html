@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dorsal Horn Pain Modulation Drag Game</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="topbar" aria-label="Game controls">
+        <div>
+          <p class="kicker">PT pain science</p>
+          <h1>Dorsal Horn Synapse Mapper</h1>
+        </div>
+        <div class="score-card" aria-live="polite">
+          <span id="score">0</span>
+          <span>/</span>
+          <span id="total">0</span>
+          <small>correct</small>
+        </div>
+        <button id="editModeBtn" class="edit-btn" type="button" aria-pressed="false">Edit Layout</button>
+        <button id="resetBtn" class="reset-btn" type="button">Reset</button>
+      </section>
+
+      <section class="workspace" aria-label="Drag neurotransmitters into spinal pain pathway targets">
+        <aside class="tray" aria-label="Draggable neurotransmitters and mediators">
+          <h2>Drag to the correct site</h2>
+          <div id="tokenTray" class="token-tray"></div>
+        </aside>
+
+        <section class="diagram-panel" aria-label="Dorsal horn gate control diagram with added ALS and descending modulation arrows">
+          <div class="diagram-map">
+            <img
+              class="gate-image"
+              src="assets/gate.jpg"
+              alt="Dorsal horn gate control mechanism showing C fiber and A-delta nociceptor input, A-beta input, inhibitory interneuron, transmission neuron, and output to ALS"
+            />
+
+            <svg class="path-overlay" viewBox="0 0 1600 1040" aria-hidden="true">
+              <defs>
+                <marker id="alsArrow" markerWidth="12" markerHeight="12" refX="10" refY="4" orient="auto">
+                  <path d="M0,0 L0,8 L11,4 z"></path>
+                </marker>
+                <marker id="descArrow" markerWidth="12" markerHeight="12" refX="10" refY="4" orient="auto">
+                  <path d="M0,0 L0,8 L11,4 z"></path>
+                </marker>
+              </defs>
+              <path class="overlay-arrow als-arrow" d="M1260 920 C1320 780, 1335 610, 1315 430 C1302 310, 1360 210, 1455 120" marker-end="url(#alsArrow)"></path>
+              <path class="overlay-arrow desc-arrow" d="M1440 150 C1340 220, 1280 330, 1200 475 C1132 598, 1060 705, 1010 785" marker-end="url(#descArrow)"></path>
+            </svg>
+
+            <div class="overlay-label als-label">
+              <strong>ALS</strong>
+              <span>Anterolateral spinothalamic tract ascending to thalamus</span>
+            </div>
+            <div class="overlay-label descending-label">
+              <strong>RVM + LC</strong>
+              <span>Descending inhibition or facilitation into dorsal horn</span>
+            </div>
+
+            <div class="drop-zone skin-zone" data-zone="skin">
+              <strong>Peripheral sensitizers at nociceptor terminal</strong>
+              <span class="slot-count">0/3</span>
+            </div>
+            <div class="drop-zone primary-zone" data-zone="primarySynapse">
+              <strong>C fiber / A-delta onto transmission neuron</strong>
+              <span class="slot-count">0/2</span>
+            </div>
+            <div class="drop-zone presynaptic-zone" data-zone="presynapticInhibition">
+              <strong>Interneuron onto nociceptor terminal</strong>
+              <span class="slot-count">0/1</span>
+            </div>
+            <div class="drop-zone postsynaptic-zone" data-zone="postsynapticInhibition">
+              <strong>Interneuron onto transmission neuron</strong>
+              <span class="slot-count">0/3</span>
+            </div>
+            <div class="drop-zone descending-zone" data-zone="descending">
+              <strong>Descending RVM / LC modulation</strong>
+              <span class="slot-count">0/2</span>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <section class="feedback-row" aria-live="polite">
+        <div id="feedback" class="feedback">Drag a card onto a synapse or modulation site.</div>
+        <button id="reviewBtn" class="review-btn" type="button">Show completed map</button>
+      </section>
+
+      <section id="layoutEditor" class="layout-editor" aria-label="Layout editor" hidden>
+        <div>
+          <h2>Layout editor</h2>
+          <p>Drag a drop box to move it. Pull its lower-right handle to resize it. Save stores the layout in this browser.</p>
+        </div>
+        <div class="editor-actions">
+          <button id="saveLayoutBtn" type="button">Save Layout</button>
+          <button id="resetLayoutBtn" type="button">Reset Boxes</button>
+          <button id="exportLayoutBtn" type="button">Export JSON</button>
+          <button id="importLayoutBtn" type="button">Import JSON</button>
+        </div>
+        <label class="layout-json-label" for="layoutJson">Layout JSON</label>
+        <textarea id="layoutJson" class="layout-json" rows="4" spellcheck="false"></textarea>
+
+        <div class="answer-editor">
+          <div>
+            <h2>Answer key and drag items</h2>
+            <p>Change each card's correct drop box, edit the card text, or add new drag cards.</p>
+          </div>
+          <div class="editor-actions">
+            <button id="addItemBtn" type="button">Add Drag Item</button>
+            <button id="saveItemsBtn" type="button">Save Items</button>
+            <button id="resetItemsBtn" type="button">Reset Items</button>
+          </div>
+          <div id="answerKeyEditor" class="answer-key-editor"></div>
+        </div>
+      </section>
+
+      <section id="explainPanel" class="explain-panel" aria-label="Learning notes">
+        <h2>Why these placements matter</h2>
+        <div class="note-grid">
+          <article>
+            <h3>Peripheral nociceptor</h3>
+            <p>Histamine and inflammatory cytokines sensitize nociceptor endings in injured skin, lowering threshold and amplifying input into the dorsal horn.</p>
+          </article>
+          <article>
+            <h3>Dorsal horn excitation</h3>
+            <p>Primary afferent terminals in superficial dorsal horn release glutamate for fast excitation and substance P during stronger or sustained nociceptive input.</p>
+          </article>
+          <article>
+            <h3>Spinal inhibition</h3>
+            <p>A-beta input can engage inhibitory interneurons. GABA, glycine, and enkephalin reduce transmitter release and dampen transmission-neuron firing.</p>
+          </article>
+          <article>
+            <h3>Descending control</h3>
+            <p>RVM serotonergic input can inhibit or facilitate dorsal horn signaling. LC noradrenergic input is classically inhibitory through spinal alpha-2 mechanisms.</p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <script src="gate-image.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
